@@ -1,0 +1,30 @@
+<template>
+    <div class="slds-grid slds-gutters">
+        <div class="slds-col">
+            <lightning-card title="Signature Pad" icon-name="standard:record_signature_task">
+                <div class="slds-align_absolute-center">
+                    <canvas class="signature-pad" width={canvasWidth} height={canvasHeight} lwc:dom="manual"></canvas>
+                </div>
+                <div id="result" class="slds-col">
+                    <template if:true={result}>
+                        <lightning-textarea label="Signature data" readonly value={result}></lightning-textarea>
+                    </template>
+                </div>
+            </lightning-card>
+            <lightning-button label=Clear onclick={handleClear} variant="neutral" class="slds-p-left_medium slds-float_right"></lightning-button>
+            <lightning-button label=Sign onclick={handleSave} variant="brand" class="slds-float_right"></lightning-button>
+        </div>
+        <div id="preview" class="slds-col">
+            <lightning-card title="Signed Document" icon-name="standard:scheduling_policy">
+                <template if:true={resultFile}>
+                    <iframe src={resultFile} style="height: 30rem;"></iframe>
+                </template>
+                <template if:false={resultFile}>
+                    <lightning-card>
+                        No PDF was signed yet.
+                    </lightning-card>
+                </template>
+            </lightning-card>
+        </div>
+    </div>    
+</template>

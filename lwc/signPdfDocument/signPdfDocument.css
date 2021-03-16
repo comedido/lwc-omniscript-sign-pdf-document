@@ -1,0 +1,15 @@
+.signature-pad {
+	/*width:100%;
+	height:100%;
+    width: 400;
+    height: 160;*/
+    border: 2px dotted #CCCCCC;
+    border-radius: 15px;
+    cursor: crosshair;
+}
+
+iframe {
+    border: 0;
+    width: 100%;
+    height: 200px;
+}
