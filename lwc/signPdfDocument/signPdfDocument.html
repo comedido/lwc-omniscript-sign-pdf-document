@@ -5,11 +5,11 @@
                 <div class="slds-align_absolute-center">
                     <canvas class="signature-pad" width={canvasWidth} height={canvasHeight} lwc:dom="manual"></canvas>
                 </div>
-                <div id="result" class="slds-col">
+                <!--<div id="result" class="slds-col">
                     <template if:true={result}>
                         <lightning-textarea label="Signature data" readonly value={result}></lightning-textarea>
                     </template>
-                </div>
+                </div>-->
             </lightning-card>
             <lightning-button label=Clear onclick={handleClear} variant="neutral" class="slds-p-left_medium slds-float_right"></lightning-button>
             <lightning-button label=Sign onclick={handleSave} variant="brand" class="slds-float_right"></lightning-button>
@@ -17,7 +17,10 @@
         <div id="preview" class="slds-col">
             <lightning-card title="Signed Document" icon-name="standard:scheduling_policy">
                 <template if:true={resultFile}>
+                    <!-- Display blob (signed PDF not persisted) -->
                     <iframe src={resultFile} style="height: 30rem;"></iframe>
+                    <!-- Display File (signed PDF persisted) -->
+                    <iframe src={resultUrl} style="height: 30rem;"></iframe>
                 </template>
                 <template if:false={resultFile}>
                     <lightning-card>

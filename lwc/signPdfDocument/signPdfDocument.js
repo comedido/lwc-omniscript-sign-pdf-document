@@ -13,6 +13,7 @@ import { LightningElement, api } from 'lwc';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import { loadScript } from 'lightning/platformResourceLoader';
 import { OmniscriptBaseMixin } from 'vlocity_ins/omniscriptBaseMixin';
+import { getDataHandler } from "vlocity_ins/utility";
 
 export default class SignPdfDocument extends OmniscriptBaseMixin(LightningElement) {
     // Signature Vars
@@ -123,21 +124,52 @@ export default class SignPdfDocument extends OmniscriptBaseMixin(LightningElemen
         const pngDims = pngImage.scale(0.5)
 
         // Add a blank page to the document
-        const page = pdfDoc.addPage()
+        //const page = pdfDoc.addPage()
+        // Get the first page of the document
+        const pages = pdfDoc.getPages()
+        const firstPage = pages[0]
+        const { width, height } = firstPage.getSize()
 
         // Draw the PNG image near the lower right corner of the JPG image
-        page.drawImage(pngImage, {
-            x: page.getWidth() / 2 - pngDims.width / 2 + 75,
-            y: page.getHeight() / 2 - pngDims.height,
+         /*page.drawImage(pngImage, {
+             x: page.getWidth() / 2 - pngDims.width / 2 + 75,
+             y: page.getHeight() / 2 - pngDims.height,
+             width: pngDims.width,
+             height: pngDims.height,
+         })*/
+         // Embed the Signature into the first page
+         firstPage.drawImage(pngImage, {
+            x: pngDims.width + 75,
+            y: firstPage.getHeight() - pngDims.height + 30,
             width: pngDims.width,
             height: pngDims.height,
         })
 
         // Serialize the PDFDocument to bytes (as base64) and generate url
-        this.resultFile = await pdfDoc.saveAsBase64({ dataUri: true });
+        //this.resultFile = await pdfDoc.saveAsBase64({ dataUri: true });
+        this.resultFile = await pdfDoc.saveAsBase64();
 
         // Update OmniScript JSON
-        this.omniUpdateDataJson(this.resultFile.split(',')[1]);
+        //this.omniUpdateDataJson(this.resultFile.split(',')[1]);
+        this.omniUpdateDataJson(this.resultFile);
+
+        // Optional: Persist Signed PDF as a new File
+        const payload = {'SignDocument':{'SignedDocument':this.resultFile},'pdfVersionData':{'contentDocumentId':this.contentDocumentId}};
+
+        let datasourcedef = JSON.stringify({
+            "type": "dataraptor",
+            "value": {
+                "bundleName": "Document_InsertPdfDocument",
+                "inputMap": payload
+            }
+          });
+          
+        getDataHandler(datasourcedef).then(data => {
+            console.log(`DR data => ${data}`);
+            this.resultUrl = '/sfc/servlet.shepherd/document/download/' + this.contentDocumentId;
+        }).catch(error => {
+            console.log(`failed at getting DR data => ${JSON.stringify(error)}`);
+        });
         
     }
     
