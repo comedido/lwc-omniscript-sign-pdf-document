@@ -36,6 +36,17 @@ export default class SignPdfDocument extends OmniscriptBaseMixin(LightningElemen
         this.contentVersionData = val;
     }
 
+    @api contentDocumentId;
+    @api get documentid() {
+        return this.contentDocumentId;
+    }
+    set documentid(val) {
+        if (val === null) {
+            return    
+        }
+        this.contentDocumentId = val;
+    }
+
     // LWC Lifecycle Hooks
     renderedCallback() {
 
