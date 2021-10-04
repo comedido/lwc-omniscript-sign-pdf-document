@@ -178,9 +178,18 @@ export default class SignPdfDocument extends OmniscriptBaseMixin(LightningElemen
         getDataHandler(datasourcedef).then(data => {
             console.log(`DR data => ${data}`);
             this.resultUrl = '/sfc/servlet.shepherd/document/download/' + this.contentDocumentId;
+            // optional fix: force a reload manually
+            let iframe = this.template.querySelector('iframe');
+            iframe.src = this.resultUrl;
+            iframe.reload();
         }).catch(error => {
             console.log(`failed at getting DR data => ${JSON.stringify(error)}`);
         });
+
+        // optional fix: force a reload manually
+        let iframe = this.template.querySelector('iframe');
+        iframe.src = this.resultUrl;
+        iframe.reload();
         
     }
     

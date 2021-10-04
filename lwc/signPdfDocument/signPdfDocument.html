@@ -17,6 +17,7 @@
         <div id="preview" class="slds-col">
             <lightning-card title="Signed Document" icon-name="standard:scheduling_policy">
                 <template if:true={resultFile}>
+                    <!-- Choose one option of these below based on your use case, comment the other -->
                     <!-- Display blob (signed PDF not persisted) -->
                     <iframe src={resultFile} style="height: 30rem;"></iframe>
                     <!-- Display File (signed PDF persisted) -->
