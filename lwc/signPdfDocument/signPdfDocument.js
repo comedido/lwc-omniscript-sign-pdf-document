@@ -134,27 +134,35 @@ export default class SignPdfDocument extends OmniscriptBaseMixin(LightningElemen
         // Get the width/height of the PNG image scaled down to 50% of its original size
         const pngDims = pngImage.scale(0.5)
 
-        // Add a blank page to the document
-        //const page = pdfDoc.addPage()
-        // Get the first page of the document
+        // Get PDF Pages
         const pages = pdfDoc.getPages()
+
+        /*
+        // Get the first page of the document
         const firstPage = pages[0]
         const { width, height } = firstPage.getSize()
-
-        // Draw the PNG image near the lower right corner of the JPG image
-         /*page.drawImage(pngImage, {
-             x: page.getWidth() / 2 - pngDims.width / 2 + 75,
-             y: page.getHeight() / 2 - pngDims.height,
-             width: pngDims.width,
-             height: pngDims.height,
-         })*/
-         // Embed the Signature into the first page
-         firstPage.drawImage(pngImage, {
-            x: pngDims.width + 75,
-            y: firstPage.getHeight() - pngDims.height + 30,
+        // Embed the Signature into the first page
+        firstPage.drawImage(pngImage, {
+            //x: pngDims.width + 75,
+            x: pngDims.width,
+            //y: firstPage.getHeight() - pngDims.height + 30,
+            y: pngDims.height + 10,
             width: pngDims.width,
             height: pngDims.height,
-        })
+        })*/
+
+        // Draw Signature on every page
+        pages.forEach(function(page, index) {
+            const { width, height } = page.getSize()
+            page.drawImage(pngImage, {
+                //x: pngDims.width + 75,
+                x: pngDims.width,
+                //y: firstPage.getHeight() - pngDims.height + 30,
+                y: pngDims.height + 10,
+                width: pngDims.width,
+                height: pngDims.height,
+            })
+        });
 
         // Serialize the PDFDocument to bytes (as base64) and generate url
         //this.resultFile = await pdfDoc.saveAsBase64({ dataUri: true });
