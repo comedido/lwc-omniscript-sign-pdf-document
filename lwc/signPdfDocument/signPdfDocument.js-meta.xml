@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata" fqn="signPDFDocument">
-    <apiVersion>51.0</apiVersion>
+    <apiVersion>58.0</apiVersion>
     <isExposed>true</isExposed>
-    <runtimeNamespace>vlocity_ins</runtimeNamespace>
+    <runtimeNamespace>omnistudio</runtimeNamespace>
     <masterLabel>Sign PDF Document</masterLabel>
     <targets>
         <target>lightning__AppPage</target>
